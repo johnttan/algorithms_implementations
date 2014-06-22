@@ -1,0 +1,59 @@
+
+def merge(left, right):
+    # print(left, right)
+
+    if isinstance(left, tuple):
+        inversionsleft = left[1]
+        left = left[0]
+    else:
+        inverisonsright = 0
+    if isinstance(right, tuple):
+        inversionsright = right[1]
+        right = right[0]
+    else:
+        inversionsright = 0
+    result = []
+    # print(left, right)
+    if len(left) == 1:
+        if left > right:
+            return right + left, 1
+        else:
+            return left + right, 0
+    else:
+        inversions = 0
+        while left or right:
+            if not left:
+                result.append(right.pop())
+            elif (not right):
+                result.append(left.pop())
+            elif left[-1] > right [-1]:
+                inversions += len(right)
+                result.append(left.pop())
+            else:
+                result.append(right.pop())
+                
+
+    result.reverse()
+    # print(inversions, inversionsleft, inversionsright)
+    return result, inversions + inversionsleft + inversionsright
+
+
+def sort(alist, left, right):
+    if left == right:
+        return [alist[left]]
+    else:
+        right1 = left + (right-left)//2
+        return merge(sort(alist, left, right1), sort(alist, right1+1, right))
+
+
+a = [ 9, 12, 3, 1, 6, 8, 2, 5, 14, 13, 11, 7, 10, 4, 0 ]
+integers = open('IntegerArray.txt')
+
+data = []
+for line in integers.readlines():
+    data.append(int(line))
+data1 = list(data)
+data1.sort()
+print(sort(data, 0, len(data)-1)[1])
+# print(sort(data, 0, len(data)-1)[0] == data1)
+# print(sort(a, 0, len(a)-1)[1])
