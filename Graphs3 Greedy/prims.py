@@ -22,26 +22,6 @@ def prim(graph, numNodes):
 	X[1] = True
 	V[1] = False
 	MST = []
-	MSTcost = 0
-	while len(Xnodes) < numNodes:
-		lowest = 10000000000000
-		lowEdge = []
-		direction = 0
-		for edge in edges:
-			if X[edge[0]] and V[edge[1]]:
-				if edge[2] < lowest:
-					lowest = edge[2]
-					lowEdge = edge
-					direction = 1
-			elif X[edge[1]] and V[edge[0]]:
-				if edge[2] < lowest:
-					lowest = edge[2]
-					lowEdge = edge
-					direction = 0
-		Xnodes.append(edge[direction])
-		MST.append(lowEdge)
-		MSTcost += lowest
-	return MST, MSTcost
 
 edges, numNodes, numEdges = load('testprims.txt')
 MST, MSTcost = prim(edges, numNodes)
