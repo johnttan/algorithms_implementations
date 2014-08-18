@@ -28,19 +28,19 @@ def prim(graph, numNodes, edges):
 	marked[1] = True
 
 	MST = []
-	counter = 0
+	MSTcost = 0
 	# Init first vertex
 	for otherV in graph[1]:
-		heapq.heappush(minHeap, (graph[1][otherV], counter, [1, otherV]))
+		heapq.heappush(minHeap, (graph[1][otherV], [1, otherV]))
 		minW[otherV] = graph[1][otherV]
-		counter += 1
+
 	# begin main loop for MST construction
 	while len(minHeap) > 0:
 		# print(marked)
 		# print(minHeap)
 		current = heapq.heappop(minHeap)
-		node1 = current[2][0]
-		node2 = current[2][1]
+		node1 = current[1][0]
+		node2 = current[1][1]
 		weight = current[0]
 		# print(current)
 		# if vectors already in MST, skip
@@ -53,6 +53,7 @@ def prim(graph, numNodes, edges):
 				# print('add node2', node2)
 				minW[node1] = weight
 				marked[node2] = True
+				MSTcost += weight
 				MST.append(current)
 # 				The (for otherV) loop iterates through nodes connected to the node that was just added to MST.
 # 				Only adds nodes that span the cut between the current MST and the Graph minus MST
@@ -61,16 +62,10 @@ def prim(graph, numNodes, edges):
 				for otherV in graph[node2]:
 					# Only adds an edge if it's cheapest edge crossing cut to otherV. If it's not, it's not in MST due to Cut property. Would be pruned at later point.
 					if not marked[otherV] and graph[node2][otherV] < minW[otherV]:
-						heapq.heappush(minHeap, (graph[node2][otherV], counter, [node2, otherV]))
+						heapq.heappush(minHeap, (graph[node2][otherV], [node2, otherV]))
 # 		Not necessary to check node2 because MST can't have cycles.
-
-		counter += 1
-	MSTcost = 0
-	for edge in MST:
-		MSTcost += edge[0]
 	return MST, MSTcost
 
-# TODO
 graph, numNodes, numEdges, edges = load('edges.txt')
 MST, MSTcost = prim(graph, numNodes, edges)
 
