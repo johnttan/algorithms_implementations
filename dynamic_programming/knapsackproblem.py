@@ -30,7 +30,7 @@ def solveknapsack(w, items, printed=False):
                         table[i][we] = table[i-1][we]
                 else:
                     table[i][we] = table[i-1][we]
-
+    return table
 
 
 
